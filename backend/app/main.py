@@ -1,16 +1,13 @@
 from fastapi import FastAPI
-from .routes import artists, users, auth
-from .database import engine, Base
+from routes import users, artists, music
 
-Base.metadata.create_all(bind=engine)
+app = FastAPI()
 
-app = FastAPI(title="NichExpo API")
-
-# Include routes
-app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
+# Register API routes
 app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(artists.router, prefix="/artists", tags=["Artists"])
+app.include_router(music.router, prefix="/music", tags=["Music"])
 
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to NichExpo API"}
+def home():
+    return {"message": "Welcome to NichExpo"}
