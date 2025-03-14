@@ -1,13 +1,26 @@
 from fastapi import FastAPI
-from routes import users, artists, music
+from fastapi.middleware.cors import CORSMiddleware
+from .routes import users, artists, music, admin
 
-app = FastAPI()
+app = FastAPI(title="Underground Music Discovery")
 
-# Register API routes
-app.include_router(users.router, prefix="/users", tags=["Users"])
-app.include_router(artists.router, prefix="/artists", tags=["Artists"])
-app.include_router(music.router, prefix="/music", tags=["Music"])
+# Enable CORS (so frontend can access backend)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Adjust for your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include API routes
+app.include_router(users.router, prefix="/api/users", tags=["Users"])
+app.include_router(artists.router, prefix="/api/artists", tags=["Artists"])
+app.include_router(music.router, prefix="/api/music", tags=["Music"])
+app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
 
 @app.get("/")
-def home():
-    return {"message": "Welcome to NichExpo"}
+def root():
+    return {"message": "Welcome to NichExpo API"}
+
+# Run the server with: uvicorn app.main:app --reload
