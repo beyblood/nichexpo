@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import users, artists, music, admin
+from app.database import Base, engine  
+
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Underground Music Discovery")
 
