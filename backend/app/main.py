@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import users, artists, music, admin
+from .routes import users, artists, music, admin 
 from app.database import Base, engine  
 
 
@@ -22,6 +22,7 @@ app.include_router(users.router, prefix="/api/users", tags=["Users"])
 app.include_router(artists.router, prefix="/api/artists", tags=["Artists"])
 app.include_router(music.router, prefix="/api/music", tags=["Music"])
 app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
+
 
 @app.get("/")
 def root():

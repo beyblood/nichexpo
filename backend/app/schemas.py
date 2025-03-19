@@ -1,13 +1,27 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-# User Schema
+# ==========================
+# ✅ User Schemas
+# ==========================
 class UserBase(BaseModel):
     username: str
-    email: str
+    email: EmailStr
 
 class UserCreate(UserBase):
     password: str
+    role: str  # "user", "artist", or "admin"
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
 
 class UserResponse(UserBase):
     id: int
@@ -15,7 +29,13 @@ class UserResponse(UserBase):
     class Config:
         from_attributes = True
 
-# Artist Schema
+class UserProfile(BaseModel):
+    username: str
+    role: str
+
+# ==========================
+# ✅ Artist Schemas
+# ==========================
 class ArtistBase(BaseModel):
     user_id: int
     country: str
@@ -32,7 +52,9 @@ class ArtistResponse(ArtistBase):
     class Config:
         from_attributes = True
 
-# ✅ Add the missing MusicCreate schema
+# ==========================
+# ✅ Music Schemas
+# ==========================
 class MusicBase(BaseModel):
     artist_id: int
     title: str
